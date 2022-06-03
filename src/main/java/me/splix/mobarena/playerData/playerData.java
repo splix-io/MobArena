@@ -15,6 +15,10 @@ public class playerData {
         this.player = player;
     }
 
+
+    public void createNewEquipmentSet(){
+        this.eps = new equipmentSet();
+    }
     public equipmentSet getEps() {
         return eps;
     }
