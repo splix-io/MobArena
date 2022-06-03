@@ -1,0 +1,6 @@
+name: MobArena
+version: '${project.version}'
+main: me.splix.mobarena.Mobarena
+api-version: 1.18
+authors: [splix]
+description: MobArena Casino minigame for Splat Skyblock
