@@ -24,6 +24,7 @@ public class arena implements Listener {
     private Location pos2;
     private Location spawnLocation;
     private int maxPlayers;
+    private int minStartCount = 3;
     private boolean isAuto;
 
     private int TotalAlive = 0;
@@ -39,8 +40,26 @@ public class arena implements Listener {
         this.isAuto = isAuto;
     }
 
+    public void checkStartRequirements(){
+        if (TotalAlive >= minStartCount){
+            status = arenaState.IN_PROGRESS;
+            //Add starting script.
+
+            //UpdateCall
+            ArenaHandler.getInstance().arenaStateChange(this);
+        }
+    }
+
     public void setStatus(arenaState status){
         this.status = status;
+    }
+
+    public arenaState getStatus() {
+        return status;
+    }
+
+    public boolean isSpaceAvailable(){
+        return (TotalAlive != maxPlayers);
     }
 
     public boolean addPlayer(Player player, wagerInfo info, Fighters fighter){

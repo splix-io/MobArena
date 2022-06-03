@@ -37,20 +37,25 @@ public class setEquipment implements Listener {
     }
 
     public static Inventory getInventory(playerData pd){
+        Inventory toSend = Bukkit.createInventory(null, size, comTitle);
+        toSend.setContents(inv.getContents());
         equipmentSet set = pd.getEps();
-        inv.setItem(11, set.getHelmet());
-        inv.setItem(20, set.getChestPlate());
-        inv.setItem(29, set.getLeggings());
-        inv.setItem(38, set.getBoots());
-        inv.setItem(23, set.getWeapon());
+        toSend.setItem(11, set.getHelmet());
+        toSend.setItem(20, set.getChestPlate());
+        toSend.setItem(29, set.getLeggings());
+        toSend.setItem(38, set.getBoots());
+        toSend.setItem(23, set.getWeapon());
 
-        return inv;
+        return toSend;
     }
 
     @EventHandler
     public void onClick(InventoryClickEvent event){
         if(event.getClickedInventory() == inv){
             //Add Actions
+            if (event.getSlot() < 53){
+                event.setCancelled(true);
+            }
         }
     }
 
