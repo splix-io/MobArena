@@ -47,17 +47,31 @@ public class ArenaHandler {
 
     public void arenaStateChange(arena arena){
         if (arena.getStatus() == arenaState.FREE){
-            while (queueHandler.isPlayerWaiting()){
-                if (arena.isSpaceAvailable()){
-                    playerData playerData = playerDataHandler.getInstance().getPlayerData(queueHandler.getNextPlayer());
-                    arena.addPlayer(playerData.getPlayer(),playerData.getWagerInfo(), playerData.getWarrior());
-                }else{
-                    break;
-                }
-            }
+            CheckPlayerAvailability(arena);
 
         } else if (arena.getStatus() == arenaState.IN_PROGRESS) {
             JavaPlugin.getPlugin(Mobarena.class).getLogger().log(Level.ALL, "Arena Starting!");
+        }
+    }
+
+    public void CheckPlayerAvailability(arena arena){
+        while (queueHandler.isPlayerWaiting()){
+            if (arena.isSpaceAvailable()){
+                playerData playerData = playerDataHandler.getInstance().getPlayerData(queueHandler.getNextPlayer());
+                arena.addPlayer(playerData.getPlayer(),playerData.getWagerInfo(), playerData.getWarrior());
+            }else{
+                break;
+            }
+        }
+    }
+
+    public void CheckPlayerAvailability(){
+        for (arena ar: allArenas){
+            if (ar.getStatus() == arenaState.FREE){
+                CheckPlayerAvailability(ar);
+            }else{
+                continue;
+            }
         }
     }
 

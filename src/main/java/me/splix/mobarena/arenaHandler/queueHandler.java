@@ -11,6 +11,7 @@ public class queueHandler {
 
     public static void addPlayer(Player player){
         waitingList.add(player);
+        ArenaHandler.getInstance().CheckPlayerAvailability();
     }
 
     public static Player getNextPlayer(){
