@@ -1,10 +1,10 @@
 package me.splix.mobarena.arenaHandler.fighters;
 
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 
 public interface Fighters {
 
-    public default LivingEntity getEntity(){
+    public default Entity getEntity(){
         return null;
     }
 }

@@ -4,6 +4,7 @@ import me.splix.mobarena.playerData.subData.equipmentSet;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,6 +21,8 @@ public class ZombieWarrior implements Fighters{
 
     public void createMob(Location location, equipmentSet set){
         self = (Zombie) owner.getWorld().spawnEntity(location, EntityType.ZOMBIE);
+        PersistentDataContainer data = self.getPersistentDataContainer(); // To use
+
         self.getEquipment().setHelmet(set.getHelmet());
         self.getEquipment().setChestplate(set.getChestPlate());
         self.getEquipment().setLeggings(set.getLeggings());
