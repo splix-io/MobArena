@@ -33,6 +33,26 @@ public class GUtils {
         return item;
     }
 
+    public static ItemStack createItem(Inventory inv, Material materialid, int amount, int invSlot, String displayName, String... loreString) {
+        ItemStack item = null;
+        item = new ItemStack(materialid, amount);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(colour(displayName));
+        ArrayList<Component> lores = new ArrayList<>();
+        byte b;
+        int i;
+        String[] arrayOfString;
+        for (i = (arrayOfString = loreString).length, b = 0; b < i; ) {
+            String s = arrayOfString[b];
+            lores.add(Component.text(colour(s)));
+            b++;
+        }
+        meta.lore(lores);
+        item.setItemMeta(meta);
+        inv.setItem(invSlot, item);
+        return item;
+    }
+
     public static ItemStack placeholder(Inventory inv, Material material, int amount, int Slot, int Untill) {
         ItemStack item = null;
         item = new ItemStack(material, amount);

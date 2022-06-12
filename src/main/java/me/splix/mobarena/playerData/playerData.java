@@ -5,6 +5,7 @@ import me.splix.mobarena.playerData.subData.equipmentSet;
 import me.splix.mobarena.wager.wagerInfo;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class playerData {
 
@@ -14,6 +15,8 @@ public class playerData {
     private equipmentSet eps;
     private wagerInfo wager;
     private Fighters warrior;
+    //
+    private cache placeholderData = new cache();
 
     public playerData(Player player) {
         this.player = player;
@@ -55,5 +58,24 @@ public class playerData {
 
     public void setPlayerStatus(pStatus playerStatus) {
         this.playerStatus = playerStatus;
+    }
+
+    public ItemStack getLastItem(){
+        return placeholderData.getLastItem();
+    }
+
+    public void setLastItem(ItemStack item){
+        placeholderData.setItem(item);
+    }
+}
+class cache{
+    private ItemStack lastItem;
+
+    public void setItem(ItemStack item){
+        lastItem = item;
+    }
+
+    public ItemStack getLastItem() {
+        return lastItem;
     }
 }

@@ -11,7 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,7 +90,7 @@ public class arena implements Listener {
     }
 
     @EventHandler
-    public void onTarget(EntityTargetEvent event){
+    public void onTarget(EntityTargetLivingEntityEvent event){
         if (warriors.keySet().contains(event.getEntity())){
             if (!warriors.keySet().contains(event.getTarget()))
                 event.setCancelled(true);

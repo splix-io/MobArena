@@ -43,15 +43,18 @@ public class wagerInfo {
         this.crystals += amount;
     }
 
-    public void removeWager(int amount){
+    public int removeWager(int amount){
         this.money -= amount;
+        return amount;
     }
 
-    public void removeWager(ItemStack item){
+    public ItemStack removeWager(ItemStack item){
         items.remove(item);
+        return item;
     }
 
-    public void removeCrystal(int amount){
+    public int removeCrystal(int amount){
         this.crystals -= amount;
+        return amount;
     }
 }
