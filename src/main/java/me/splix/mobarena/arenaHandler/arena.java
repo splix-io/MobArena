@@ -40,7 +40,8 @@ public class arena implements Listener {
     private Map<Fighters, Player> warriors = new HashMap<>();
     private List<LivingEntity> allTargetable = new ArrayList<>();
 
-    public arena(Location pos1, Location pos2, Location spawnLocation, int maxPlayers, boolean isAuto) {
+    public arena(Mobarena plugin, Location pos1, Location pos2, Location spawnLocation, int maxPlayers, boolean isAuto) {
+        this.pluginInstance = plugin;
         this.pos1 = pos1;
         this.pos2 = pos2;
         this.spawnLocation = spawnLocation;
@@ -99,6 +100,19 @@ public class arena implements Listener {
     }
 
 
+    public void checkWinStatus(){
+        if (TotalAlive == 1){
+            status = arenaState.CLEARING;
+            clearArena();
+        }
+    }
+
+    public void clearArena(){
+        // Implement winner award
+        // Implement vars clear
+        // arenaHandler links.
+    }
+
     public void startLoadUp(){
 
     }
@@ -109,13 +123,14 @@ public class arena implements Listener {
             if (entity instanceof Mob mob){
                 LivingEntity targeted = mob.getTarget();
 
-                if (targeted != null && !canTarget(targeted)){
+                if (!canTarget(targeted)){
                     mob.setTarget(null);
                     List<Entity> possible = mob.getNearbyEntities(10,10,10);
                     for (Entity targetPossible: possible){
                         if (targetPossible instanceof LivingEntity livingEntityTarget) {
                             if (allTargetable.contains(livingEntityTarget)) {
                                 mob.setTarget(livingEntityTarget);
+                                break;
                             }
                         }
                     }
@@ -146,6 +161,7 @@ public class arena implements Listener {
             EliminatedPlayers.add(warriors.get(event.getEntity()));
             warriors.get(event.getEntity()).sendMessage("Your Warrior has fallen! You have been eliminated you placed " + TotalAlive);
             TotalAlive -= 1;
+            checkWinStatus();
         }
     }
 

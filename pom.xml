@@ -62,6 +62,10 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+            <id>repo.leonardobishop.com</id>
+            <url>https://repo.leonardobishop.com/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -75,6 +79,12 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>1.18.2-R0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.leonardobishop</groupId>
+            <artifactId>quests</artifactId>
+            <version>3.12</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
