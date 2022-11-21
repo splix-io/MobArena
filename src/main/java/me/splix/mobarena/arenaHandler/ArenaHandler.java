@@ -5,6 +5,7 @@ import me.splix.mobarena.Mobarena;
 import me.splix.mobarena.playerData.playerData;
 import me.splix.mobarena.playerData.playerDataHandler;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -14,6 +15,10 @@ public class ArenaHandler {
     private static ArenaHandler instance;
     private ArrayList<arena> allArenas = new ArrayList<>();
     private ArrayList<arena> deactivatedArenas = new ArrayList<>();
+
+    public ArenaHandler() {
+        Looper();
+    }
 
     public void registerNewArena(arena ar){
         allArenas.add(ar);
@@ -82,6 +87,15 @@ public class ArenaHandler {
             instance = new ArenaHandler();
         }
         return instance;
+    }
+
+    public void Looper(){
+        new BukkitRunnable() {
+            @Override
+            public void run(){
+                allArenas.forEach(arena -> arena.arenaHandlerHeartbeat());
+            }
+        }.runTaskTimer(Mobarena.getInstance(), 0, 20);
     }
 
 }

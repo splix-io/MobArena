@@ -88,6 +88,7 @@ public class arena implements Listener {
 
         playerData.setPlayerStatus(pStatus.IN_GAME);
         TotalAlive += 1;
+        checkStartRequirements();
         return true;
     }
 
@@ -116,22 +117,26 @@ public class arena implements Listener {
     public void startLoadUp(){
 
     }
-    private void arenaHandlerHeartbeat(){ // Run sync loop
+
+    void arenaHandlerHeartbeat(){ // Run sync loop
         for (Fighters fighters: warriors.keySet()){
             Entity entity = fighters.getEntity();
+
+            fighters.updateInfo();
 
             if (entity instanceof Mob mob){
                 LivingEntity targeted = mob.getTarget();
 
-                if (!canTarget(targeted)){
-                    mob.setTarget(null);
-                    List<Entity> possible = mob.getNearbyEntities(10,10,10);
-                    for (Entity targetPossible: possible){
-                        if (targetPossible instanceof LivingEntity livingEntityTarget) {
-                            if (allTargetable.contains(livingEntityTarget)) {
-                                mob.setTarget(livingEntityTarget);
-                                break;
-                            }
+                if (canTarget(targeted)){
+                    continue;
+                }
+                fighters.clearTarget();
+                List<Entity> possible = mob.getNearbyEntities(10,10,10);
+                for (Entity targetPossible: possible){
+                    if (targetPossible instanceof LivingEntity livingEntityTarget) {
+                        if (allTargetable.contains(livingEntityTarget)) {
+                            mob.setTarget(livingEntityTarget);
+                            break;
                         }
                     }
                 }

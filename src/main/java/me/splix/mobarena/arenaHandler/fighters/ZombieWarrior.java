@@ -1,6 +1,7 @@
 package me.splix.mobarena.arenaHandler.fighters;
 
 import me.splix.mobarena.playerData.subData.equipmentSet;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
@@ -18,6 +19,9 @@ public class ZombieWarrior implements Fighters{
     private Zombie self;
     private Entity Enemy;
 
+    public ZombieWarrior(Player owner) {
+        this.owner = owner;
+    }
 
     public void createMob(Location location, equipmentSet set){
         self = (Zombie) owner.getWorld().spawnEntity(location, EntityType.ZOMBIE);
@@ -35,16 +39,19 @@ public class ZombieWarrior implements Fighters{
         return self;
     }
 
-    void updateInfo(){
+    @Override
+    public void updateInfo(){
+        if (Enemy == null || !Enemy.isDead())
+            return;
         double currentMinDistance = 100.0;
         Entity target = null;
         Collection<Entity> targets = self.getWorld().getNearbyEntities(self.getLocation(), 10, 10, 10);
         for (Entity entity: targets){
             if (entity instanceof LivingEntity && !(entity instanceof Player)){
-                double tempDis = self.getLocation().distance(entity.getLocation());
-                if (tempDis < currentMinDistance){
+                double currentDistance = self.getLocation().distance(entity.getLocation());
+                if (currentDistance < currentMinDistance){
                     target = entity;
-                    currentMinDistance = tempDis;
+                    currentMinDistance = currentDistance;
                 }
             }
         }
@@ -56,5 +63,12 @@ public class ZombieWarrior implements Fighters{
 
     private void setEnemy(){
         self.setTarget((LivingEntity) Enemy);
+        owner.sendMessage(Component.text("&9Your Warrior is now targeting!"));
+    }
+
+    @Override
+    public void clearTarget(){
+        self.setTarget(null);
+        Enemy = null;
     }
 }
