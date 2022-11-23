@@ -53,10 +53,15 @@ public class arena implements Listener {
         if (TotalAlive >= minStartCount){
             status = arenaState.IN_PROGRESS;
             //Add starting script.
-
+            startLoadUp();
             //UpdateCall
             ArenaHandler.getInstance().arenaStateChange(this);
         }
+    }
+
+    public void startLoadUp(){
+        //Spawn in the fighters.
+
     }
 
     public void setStatus(arenaState status){
@@ -112,10 +117,6 @@ public class arena implements Listener {
         // Implement winner award
         // Implement vars clear
         // arenaHandler links.
-    }
-
-    public void startLoadUp(){
-
     }
 
     void arenaHandlerHeartbeat(){ // Run sync loop

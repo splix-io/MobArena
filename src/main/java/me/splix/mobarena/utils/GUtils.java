@@ -1,4 +1,4 @@
-package me.splix.mobarena.gui;
+package me.splix.mobarena.utils;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
@@ -64,5 +64,32 @@ public class GUtils {
         for (int i = Slot; i <= Untill; i++)
             inv.setItem(i, item);
         return item;
+    }
+    public static void fillBoarder(Inventory inv, ItemStack item){
+        if (inv.getSize() == 9){
+            setRow(inv, 0, item);
+            return; // Done
+        }
+        setColumn(inv, 0, item); // Doing the sides first because this prevents overlap of the corners
+        setColumn(inv, 8, item);
+
+        setRange(inv, 1, 8, 1, item);
+        setRange(inv, inv.getSize()-8, inv.getSize()-1, 1, item);
+    }
+
+
+    public static void setColumn(Inventory inv, int startingPoint, ItemStack stack){
+        setRange(inv, startingPoint, inv.getSize(), 9, stack);
+    }
+
+    public static void setRow(Inventory inv, int row, ItemStack stack){
+        int startPos = row * 9;
+        setRange(inv, startPos, startPos + 9, 1, stack);
+    }
+
+
+    private static void setRange(Inventory inv, int startPos, int endPos, int jumpAmount, ItemStack stack){
+        for(int i = startPos; i < endPos; i += jumpAmount)
+            inv.setItem(i, stack);
     }
 }

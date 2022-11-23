@@ -2,6 +2,7 @@ package me.splix.mobarena.gui;
 
 import me.splix.mobarena.playerData.playerData;
 import me.splix.mobarena.playerData.playerDataHandler;
+import me.splix.mobarena.utils.GUtils;
 import me.splix.mobarena.utils.language.MessageHandler;
 import me.splix.mobarena.wager.wagerInfo;
 import net.kyori.adventure.text.Component;
@@ -28,14 +29,14 @@ public class wagerGUI implements Listener {
     private static int sizeItem;
 
     public wagerGUI(String key, ConfigurationSection section) {
-        this.title = "&9&lWager GUI";
-        this.comTitle = Component.text(GUtils.colour(title));
-        this.size = 3 * 9;
-        this.invMain = Bukkit.createInventory(null, size, comTitle);
-        this.titleItem = "&9&lItems Wagered";
-        this.comTitleItem = Component.text(GUtils.colour(titleItem));
-        this.sizeItem = 4 * 9;
-        this.invItems = Bukkit.createInventory(null, sizeItem, comTitleItem);
+        title = "&9&lWager GUI";
+        comTitle = Component.text(GUtils.colour(title));
+        size = 3 * 9;
+        invMain = Bukkit.createInventory(null, size, comTitle);
+        titleItem = "&9&lItems Wagered";
+        comTitleItem = Component.text(GUtils.colour(titleItem));
+        sizeItem = 4 * 9;
+        invItems = Bukkit.createInventory(null, sizeItem, comTitleItem);
         initializeGUI();
     }
 
@@ -45,6 +46,7 @@ public class wagerGUI implements Listener {
     }
 
     public static Inventory getInventoryMainShow(Player player, wagerInfo info){
+        playerDataHandler.getInstance().getPlayerData(player).setCurrentInventoryType(GType.WAGER_GUI);
         Inventory toSend = Bukkit.createInventory(null, size, comTitle);
         toSend.setContents(invMain.getContents());
         GUtils.createItem(toSend, Material.SUNFLOWER, 1, 10, "&9&lCurrent Wagered Money",
@@ -59,12 +61,20 @@ public class wagerGUI implements Listener {
         return toSend;
     }
 
-    public static Inventory getInventoryItems(Player player, wagerInfo info){
+    public static Inventory openItemWageredGUI(Player player, wagerInfo info){
+        return openItemWageredGUI(playerDataHandler.getInstance().getPlayerData(player), info);
+    }
+
+    public static Inventory openItemWageredGUI(playerData player, wagerInfo info){
+        player.setCurrentInventoryType(GType.WAGER_ITEM);
         Inventory toSend = Bukkit.createInventory(null, sizeItem, comTitleItem);
         toSend.setContents(invItems.getContents());
-        int index = 0;
+        int index = 10;
         for (ItemStack itemStack: info.getItems()){
             GUtils.createItem(toSend, itemStack.getType(), 1, index, String.valueOf(itemStack.displayName()), "&7Shift click to &cunwager &7this Item");
+            index++;
+            if (((index + 1) % 9) == 0)
+                index += 2;
         }
         return toSend;
     }
@@ -83,7 +93,7 @@ public class wagerGUI implements Listener {
                 //Open Crystal GUI
             case 14:
                 //Open Items GUI
-                player.openInventory(getInventoryItems(player,
+                player.openInventory(openItemWageredGUI(player,
                         playerDataHandler.getInstance().getPlayerData(player).getWagerInfo()));
 
         }
@@ -95,19 +105,32 @@ public class wagerGUI implements Listener {
             return;
         }
         event.setCancelled(true);
-        if (!event.isShiftClick()){
+        if (event.isShiftClick()){
+            return;
+        }
+        if (event.getCurrentItem() == null){
             return;
         }
         playerData pd = playerDataHandler.getInstance().getPlayerData((Player) event.getWhoClicked());
         if (event.getSlot() < sizeItem){
-
             //Clicked their own Items
             pd.setLastItem(event.getCurrentItem()); // Updating data before sending message so message will be correct
             // and not null
             MessageHandler.sendPlayerMessage((Player) event.getWhoClicked(),"ADDED_ITEM_WAGER");
             //
+            pd.getWagerInfo().addWager(event.getCurrentItem());
+            pd.getPlayer().getInventory().remove(event.getCurrentItem());
+            //pd.getPlayer().getInventory().addItem(pd.getWagerInfo().removeWager(event.getCurrentItem()));
+        }else {
+            if (pd.getWagerInfo().getItems().contains(event.getCurrentItem())) {
+                pd.getPlayer().getInventory().addItem(pd.getWagerInfo().removeWager(event.getCurrentItem()));
+                MessageHandler.sendPlayerMessage((Player) event.getWhoClicked(),"REMOVED_ITEM_WAGER");
+            }
         }
-        pd.getPlayer().getInventory().addItem(pd.getWagerInfo().removeWager(event.getCurrentItem()));
 
     }
 }
+
+//TODO:
+// Crystal GUI
+// Money GUI

@@ -93,7 +93,7 @@ public class ArenaHandler {
         new BukkitRunnable() {
             @Override
             public void run(){
-                allArenas.forEach(arena -> arena.arenaHandlerHeartbeat());
+                allArenas.forEach(arena::arenaHandlerHeartbeat);
             }
         }.runTaskTimer(Mobarena.getInstance(), 0, 20);
     }

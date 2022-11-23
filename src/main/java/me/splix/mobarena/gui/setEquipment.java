@@ -1,11 +1,15 @@
 package me.splix.mobarena.gui;
 
 import me.splix.mobarena.playerData.playerData;
+import me.splix.mobarena.playerData.playerDataHandler;
 import me.splix.mobarena.playerData.subData.equipmentSet;
+import me.splix.mobarena.utils.GUtils;
+import me.splix.mobarena.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -45,10 +49,31 @@ public class setEquipment implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event) {
-        if (event.getClickedInventory() == inv) {
-            //Add Actions
-            if (event.getSlot() < 53) {
-                event.setCancelled(true);
+        if (event.getClickedInventory() != inv) {
+            return;
+        }
+        if (event.getCurrentItem() == null || event.isShiftClick())
+            return;
+        Player player = (Player) event.getWhoClicked();
+        playerData playerData = playerDataHandler.getInstance().getPlayerData(player);
+        //Add Actions
+        if (event.getSlot() < 53) {
+            event.setCancelled(true);
+            if (Utils.isArmor(event.getCurrentItem())){
+                if (Utils.isHelmet(event.getCurrentItem())){
+                    playerData.getEps().setHelmet(event.getCurrentItem());
+
+                } else if (Utils.isChestPlate(event.getCurrentItem())) {
+                    playerData.getEps().setChestPlate(event.getCurrentItem());
+
+                } else if (Utils.isLeggings(event.getCurrentItem())) {
+                    playerData.getEps().setLeggings(event.getCurrentItem());
+
+                } else if (Utils.isBoots(event.getCurrentItem())) {
+                    playerData.getEps().setBoots(event.getCurrentItem());
+
+                }
+                player.getInventory().remove(event.getCurrentItem());
             }
         }
     }

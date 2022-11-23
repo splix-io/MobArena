@@ -1,6 +1,7 @@
 package me.splix.mobarena.playerData;
 
 import me.splix.mobarena.arenaHandler.fighters.Fighters;
+import me.splix.mobarena.gui.GType;
 import me.splix.mobarena.playerData.subData.equipmentSet;
 import me.splix.mobarena.wager.wagerInfo;
 import org.bukkit.Location;
@@ -15,6 +16,7 @@ public class playerData {
     private equipmentSet eps;
     private wagerInfo wager;
     private Fighters warrior;
+    private GType currentInventoryType = GType.NONE;
     //
     private cache placeholderData = new cache();
 
@@ -62,6 +64,14 @@ public class playerData {
 
     public ItemStack getLastItem(){
         return placeholderData.getLastItem();
+    }
+
+    public GType getCurrentInventoryType() {
+        return currentInventoryType;
+    }
+
+    public void setCurrentInventoryType(GType currentInventoryType) {
+        this.currentInventoryType = currentInventoryType;
     }
 
     public void setLastItem(ItemStack item){

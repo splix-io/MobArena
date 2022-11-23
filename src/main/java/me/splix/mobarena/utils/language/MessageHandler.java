@@ -13,8 +13,8 @@ public class MessageHandler {
     private static Mobarena instance;
     private static Map<String, Component> storedMessages = new HashMap<>();
 
-    public MessageHandler(Mobarena instance) {
-        this.instance = instance;
+    public MessageHandler(Mobarena instanceCreated) {
+        instance = instanceCreated;
     }
 
     public static void registerMessage(String key, String value){
