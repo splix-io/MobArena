@@ -1,5 +1,6 @@
 package me.splix.mobarena.playerData;
 
+import me.splix.mobarena.arenaHandler.arena;
 import me.splix.mobarena.arenaHandler.fighters.Fighters;
 import me.splix.mobarena.gui.GType;
 import me.splix.mobarena.playerData.subData.equipmentSet;
@@ -17,11 +18,19 @@ public class playerData {
     private wagerInfo wager;
     private Fighters warrior;
     private GType currentInventoryType = GType.NONE;
-    //
     private cache placeholderData = new cache();
+    private arena currentArena;
 
     public playerData(Player player) {
         this.player = player;
+    }
+
+    public void setWager(wagerInfo wager) {
+        this.wager = wager;
+    }
+
+    public void setWarrior(Fighters warrior) {
+        this.warrior = warrior;
     }
 
     public Player getPlayer() {
@@ -38,6 +47,15 @@ public class playerData {
     public void createNewEquipmentSet(){
         this.eps = new equipmentSet();
     }
+
+    public arena getCurrentArena() {
+        return currentArena;
+    }
+
+    public void setCurrentArena(arena currentArena) {
+        this.currentArena = currentArena;
+    }
+
     public equipmentSet getEps() {
         return eps;
     }

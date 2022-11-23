@@ -1,6 +1,7 @@
 package me.splix.mobarena.arenaHandler.fighters;
 
 import me.splix.mobarena.playerData.subData.equipmentSet;
+import me.splix.mobarena.utils.Utils;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
@@ -13,9 +14,9 @@ import java.util.List;
 
 public class ZombieWarrior implements Fighters{
 
-    private Player owner;
+    private final Player owner;
 
-    private List<ItemStack> items = new ArrayList<>();
+    private final List<ItemStack> items = new ArrayList<>();
     private Zombie self;
     private Entity Enemy;
 
@@ -23,9 +24,13 @@ public class ZombieWarrior implements Fighters{
         this.owner = owner;
     }
 
+    @Override
     public void createMob(Location location, equipmentSet set){
         self = (Zombie) owner.getWorld().spawnEntity(location, EntityType.ZOMBIE);
         PersistentDataContainer data = self.getPersistentDataContainer(); // To use
+
+        self.setCustomNameVisible(true);
+        self.setCustomName(Utils.chat("&9" + owner.getName()));
 
         self.getEquipment().setHelmet(set.getHelmet());
         self.getEquipment().setChestplate(set.getChestPlate());

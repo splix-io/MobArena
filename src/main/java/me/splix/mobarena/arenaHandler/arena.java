@@ -5,17 +5,17 @@ import me.splix.mobarena.arenaHandler.fighters.Fighters;
 import me.splix.mobarena.playerData.pStatus;
 import me.splix.mobarena.playerData.playerData;
 import me.splix.mobarena.playerData.playerDataHandler;
+import me.splix.mobarena.utils.Utils;
 import me.splix.mobarena.wager.wagerInfo;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Mob;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
+import org.bukkit.inventory.ItemStack;
+import ru.xezard.glow.data.glow.Glow;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +39,7 @@ public class arena implements Listener {
     private Map<Player, wagerInfo> wagers = new HashMap<>();
     private Map<Fighters, Player> warriors = new HashMap<>();
     private List<LivingEntity> allTargetable = new ArrayList<>();
-
+    private List<Glow> Effects = new ArrayList<>();
     public arena(Mobarena plugin, Location pos1, Location pos2, Location spawnLocation, int maxPlayers, boolean isAuto) {
         this.pluginInstance = plugin;
         this.pos1 = pos1;
@@ -61,7 +61,19 @@ public class arena implements Listener {
 
     public void startLoadUp(){
         //Spawn in the fighters.
-
+        for (Player player: wagers.keySet()){
+            playerData data = playerDataHandler.getInstance().getPlayerData(player);
+            warriors.put(data.getWarrior(), player);
+            data.getWarrior().createMob(Utils.getRandomLocation(pos1, pos2),data.getEps());
+            Glow glowEffect = Glow.builder()
+                            .color(Utils.getRandomColor())
+                                    .name("PL:" + player.getName())
+                                            .build();
+            glowEffect.addHolders(data.getWarrior().getEntity());
+            glowEffect.display(player);
+            Effects.add(glowEffect);
+            allTargetable.add((LivingEntity) data.getWarrior().getEntity());
+        }
     }
 
     public void setStatus(arenaState status){
@@ -81,15 +93,14 @@ public class arena implements Listener {
         if (playerData.getPlayerStatus() != pStatus.FREE){
             return false;
         }
+        playerData.setCurrentArena(this);
         playerData.setOldLocation(player.getLocation());
         player.teleport(spawnLocation);
 
         //Send joined message here
 
 
-        wagers.put(player,info);
-        warriors.put(fighter, player);
-        allTargetable.add((LivingEntity) fighter.getEntity());
+        wagers.put(player, info);
 
         playerData.setPlayerStatus(pStatus.IN_GAME);
         TotalAlive += 1;
@@ -100,7 +111,12 @@ public class arena implements Listener {
     public boolean removePlayer(Player player){
         playerData playerData  = playerDataHandler.getInstance().getPlayerData(player);
         playerData.setPlayerStatus(pStatus.FREE);
+        playerData.setCurrentArena(null);
         player.teleport(playerData.getOldLocation());
+        if (!EliminatedPlayers.contains(player)){
+            //Return Wagers
+
+        }
 
         return true;
     }
@@ -117,6 +133,29 @@ public class arena implements Listener {
         // Implement winner award
         // Implement vars clear
         // arenaHandler links.
+
+        //Award Cal
+        int money = 0;
+        int crystals = 0;
+        ArrayList<ItemStack> items = new ArrayList<>();
+        for (wagerInfo wager: wagers.values()){
+            money += wager.getMoney();
+            crystals += wager.getCrystals();
+            items.addAll(wager.getItems());
+        }
+
+        // Clear Glow Effects for all
+        Effects.forEach(Glow::destroy);
+        for (Player player: wagers.keySet()){
+            playerData playerData = playerDataHandler.getInstance().getPlayerData(player);
+            if (!EliminatedPlayers.contains(player)){
+                //Winner!
+
+            }
+            if (playerData.getCurrentArena() == this) {
+                removePlayer(player);
+            }
+        }
     }
 
     void arenaHandlerHeartbeat(){ // Run sync loop

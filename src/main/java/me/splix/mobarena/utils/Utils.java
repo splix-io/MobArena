@@ -1,9 +1,44 @@
 package me.splix.mobarena.utils;
 
+import com.google.common.base.Preconditions;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Utils {
 
+    private static final ChatColor[] colors = new ChatColor[] { ChatColor.DARK_AQUA, ChatColor.GOLD, ChatColor.GRAY,
+            ChatColor.BLUE, ChatColor.GREEN, ChatColor.AQUA, ChatColor.RED, ChatColor.LIGHT_PURPLE, ChatColor.YELLOW };
+    public static final Random random = new Random();
+
+    public static String chat(String s) {
+        if (s == null)
+            return "";
+        return ChatColor.translateAlternateColorCodes('&', s);
+    }
+    public static Location getRandomLocation(Location loc1, Location loc2) {
+        Preconditions.checkArgument(loc1.getWorld() == loc2.getWorld());
+        double minX = Math.min(loc1.getX(), loc2.getX());
+        double minY = Math.min(loc1.getY(), loc2.getY());
+        double minZ = Math.min(loc1.getZ(), loc2.getZ());
+
+        double maxX = Math.max(loc1.getX(), loc2.getX());
+        double maxY = Math.max(loc1.getY(), loc2.getY());
+        double maxZ = Math.max(loc1.getZ(), loc2.getZ());
+
+        return new Location(loc1.getWorld(), randomDouble(minX, maxX), randomDouble(minY, maxY), randomDouble(minZ, maxZ));
+    }
+
+    public static double randomDouble(double min, double max) {
+        return min + ThreadLocalRandom.current().nextDouble(Math.abs(max - min + 1));
+    }
+
+    public static ChatColor getRandomColor() {
+        return colors[random.nextInt(colors.length)];
+    }
     public static boolean isArmor(final ItemStack itemStack) {
         return (checkArmorType(itemStack, 0)
                 || checkArmorType(itemStack, 1)

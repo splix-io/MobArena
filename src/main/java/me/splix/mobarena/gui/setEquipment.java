@@ -16,6 +16,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
 public class setEquipment implements Listener {
+//THIS CLASS IS TO MODIFY THE Fighters equipment.
+    // THIS IS STORED IN THE PLAYERDATA CLASS.
 
     private static Inventory inv;
     private static String title;
@@ -31,7 +33,7 @@ public class setEquipment implements Listener {
     }
 
     private static void initializeGUI(){
-        GUtils.placeholder(inv,Material.GRAY_STAINED_GLASS_PANE,1, 0, 53);
+        GUtils.placeholder(inv, Material.GRAY_STAINED_GLASS_PANE,1, 0, 53);
     }
 
     public static Inventory getInventory(playerData pd){
@@ -43,7 +45,6 @@ public class setEquipment implements Listener {
         toSend.setItem(29, set.getLeggings());
         toSend.setItem(38, set.getBoots());
         toSend.setItem(23, set.getWeapon());
-
         return toSend;
     }
 
@@ -54,10 +55,12 @@ public class setEquipment implements Listener {
         }
         if (event.getCurrentItem() == null || event.isShiftClick())
             return;
+        if (event.getCurrentItem().getType() == Material.GRAY_STAINED_GLASS_PANE)
+            return;
         Player player = (Player) event.getWhoClicked();
         playerData playerData = playerDataHandler.getInstance().getPlayerData(player);
-        //Add Actions
-        if (event.getSlot() < 53) {
+        if (event.getSlot() > 53) {
+            //Add Actions
             event.setCancelled(true);
             if (Utils.isArmor(event.getCurrentItem())){
                 if (Utils.isHelmet(event.getCurrentItem())){
@@ -74,6 +77,24 @@ public class setEquipment implements Listener {
 
                 }
                 player.getInventory().remove(event.getCurrentItem());
+            }
+        }else{
+            if (event.getCurrentItem() == playerData.getEps().getHelmet()){
+                player.getInventory().addItem(playerData.getEps().getHelmet());
+                playerData.getEps().clearHelmet();
+
+            } else if (event.getCurrentItem() == playerData.getEps().getChestPlate()) {
+                player.getInventory().addItem(playerData.getEps().getChestPlate());
+                playerData.getEps().clearChestPlate();
+
+            } else if (event.getCurrentItem() == playerData.getEps().getLeggings()) {
+                player.getInventory().addItem(playerData.getEps().getLeggings());
+                playerData.getEps().clearLeggings();
+
+            } else if (event.getCurrentItem() == playerData.getEps().getBoots()) {
+                player.getInventory().addItem(playerData.getEps().getBoots());
+                playerData.getEps().clearBoots();
+
             }
         }
     }
