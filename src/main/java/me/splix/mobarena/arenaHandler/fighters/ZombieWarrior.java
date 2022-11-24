@@ -46,7 +46,7 @@ public class ZombieWarrior implements Fighters{
 
     @Override
     public void updateInfo(){
-        if (Enemy == null || !Enemy.isDead())
+        if (Enemy != null || !Enemy.isDead())
             return;
         double currentMinDistance = 100.0;
         Entity target = null;

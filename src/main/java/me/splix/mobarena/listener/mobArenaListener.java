@@ -19,4 +19,5 @@ public class mobArenaListener implements Listener {
             event.getPlayer().sendMessage("If you wish to run a command leave the arena");
         }
     }
+
 }

@@ -82,7 +82,6 @@ public class ArenaHandler {
     }
 
 
-
     public static ArenaHandler getInstance(){
         if (instance == null){
             instance = new ArenaHandler();

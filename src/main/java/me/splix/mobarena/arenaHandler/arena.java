@@ -7,6 +7,7 @@ import me.splix.mobarena.playerData.playerData;
 import me.splix.mobarena.playerData.playerDataHandler;
 import me.splix.mobarena.utils.Utils;
 import me.splix.mobarena.wager.wagerInfo;
+import net.kyori.adventure.title.TitlePart;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -15,6 +16,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import ru.xezard.glow.data.glow.Glow;
 
 import java.util.ArrayList;
@@ -58,7 +60,21 @@ public class arena implements Listener {
         if (TotalAlive >= minStartCount){
             status = arenaState.IN_PROGRESS;
             //Add starting script.
-            startLoadUp();
+            new BukkitRunnable(){
+                int countDown = 5;
+                @Override
+                public  void run(){
+                    for (Player players: wagers.keySet()){
+                        players.sendTitle(Utils.chat("&9&lBeginning in"), Utils.chat("&d" + countDown + " &eSeconds"),
+                                5, 10, 5);
+                    }
+                    countDown -= 1;
+                    if (countDown == 0) {
+                        startLoadUp();
+                        cancel();
+                    }
+                }
+            }.runTaskTimer(Mobarena.getInstance(), 0, 20L);
             //UpdateCall
             ArenaHandler.getInstance().arenaStateChange(this);
         }
@@ -120,7 +136,7 @@ public class arena implements Listener {
         player.teleport(playerData.getOldLocation());
         if (!EliminatedPlayers.contains(player)){
             //Return Wagers
-
+            // Will only return before the arena has started.
         }
 
         return true;
@@ -179,7 +195,7 @@ public class arena implements Listener {
                 List<Entity> possible = mob.getNearbyEntities(10,10,10);
                 for (Entity targetPossible: possible){
                     if (targetPossible instanceof LivingEntity livingEntityTarget) {
-                        if (allTargetable.contains(livingEntityTarget)) {
+                        if (canTarget(livingEntityTarget)) {
                             mob.setTarget(livingEntityTarget);
                             break;
                         }
