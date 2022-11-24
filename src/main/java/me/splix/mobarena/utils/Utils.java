@@ -1,10 +1,13 @@
 package me.splix.mobarena.utils;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.Lists;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -89,5 +92,32 @@ public class Utils {
                 break;
         }
         return false;
+    }
+
+    //Async Task.
+    public static List<Location> getOutlineBoarder(Location loc1, Location loc2, double particleDistance) {
+        List<Location> result = Lists.newArrayList();
+        World world = loc1.getWorld();
+        double minX = loc1.getBlockX();
+        double minY = loc1.getBlockY();
+        double minZ = loc1.getBlockZ();
+        double maxX = loc2.getBlockX()+1;
+        double maxY = loc2.getBlockY()+1;
+        double maxZ = loc2.getBlockZ()+1;
+
+        for (double x = minX; x <= maxX; x = Math.round((x + particleDistance) * 1e2) / 1e2) {
+            for (double y = minY; y <= maxY; y = Math.round((y + particleDistance) * 1e2) / 1e2) {
+                for (double z = minZ; z <= maxZ; z = Math.round((z + particleDistance) * 1e2) / 1e2) {
+                    int components = 0;
+                    if (x == minX || x == maxX) components++;
+                    if (y == minY || y == maxY) components++;
+                    if (z == minZ || z == maxZ) components++;
+                    if (components >= 2) {
+                        result.add(new Location(world, x, y, z));
+                    }
+                }
+            }
+        }
+        return result;
     }
 }

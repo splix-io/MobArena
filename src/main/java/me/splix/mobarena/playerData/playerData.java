@@ -1,6 +1,7 @@
 package me.splix.mobarena.playerData;
 
 import me.splix.mobarena.arenaHandler.arena;
+import me.splix.mobarena.arenaHandler.arenaCreator;
 import me.splix.mobarena.arenaHandler.fighters.Fighters;
 import me.splix.mobarena.gui.GType;
 import me.splix.mobarena.playerData.subData.equipmentSet;
@@ -16,6 +17,7 @@ public class playerData {
     private pStatus playerStatus = pStatus.FREE;
     private equipmentSet eps;
     private wagerInfo wager;
+    private arenaCreator arenaCreator;
     private Fighters warrior;
     private GType currentInventoryType = GType.NONE;
     private cache placeholderData = new cache();
@@ -94,6 +96,22 @@ public class playerData {
 
     public void setLastItem(ItemStack item){
         placeholderData.setItem(item);
+    }
+
+    public void newArenaCreatorSession(){
+        arenaCreator = new arenaCreator();
+    }
+
+    public boolean isCreatorEnabled(){
+        return (arenaCreator != null);
+    }
+
+    public me.splix.mobarena.arenaHandler.arenaCreator getArenaCreator() {
+        return arenaCreator;
+    }
+
+    public void removeArenaCreator(){
+        arenaCreator = null;
     }
 }
 class cache{

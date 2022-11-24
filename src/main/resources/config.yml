@@ -5,6 +5,11 @@
 
 
 arena:
-  position:
-    pos1:
-    pos2:
+  key:
+    name: "Name"
+    minCount: 3
+    maxCount: 6
+    position:
+      pos1:
+      pos2:
+      playerSpawn:

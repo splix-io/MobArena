@@ -27,11 +27,13 @@ public class arena implements Listener {
 
     private Mobarena pluginInstance;
     private arenaState status = arenaState.FREE;
+    private String key;
+    private String Name;
     private Location pos1;
     private Location pos2;
     private Location spawnLocation;
     private int maxPlayers;
-    private int minStartCount = 3;
+    private int minStartCount;
     private boolean isAuto;
 
     private int TotalAlive = 0;
@@ -40,11 +42,14 @@ public class arena implements Listener {
     private Map<Fighters, Player> warriors = new HashMap<>();
     private List<LivingEntity> allTargetable = new ArrayList<>();
     private List<Glow> Effects = new ArrayList<>();
-    public arena(Mobarena plugin, Location pos1, Location pos2, Location spawnLocation, int maxPlayers, boolean isAuto) {
-        this.pluginInstance = plugin;
+    public arena(String keyIden, String name, Location pos1, Location pos2, Location spawnLocation, int minPlayers, int maxPlayers, boolean isAuto) {
+        this.pluginInstance = Mobarena.getInstance();
+        this.key = keyIden;
+        this.Name = name;
         this.pos1 = pos1;
         this.pos2 = pos2;
         this.spawnLocation = spawnLocation;
+        this.minStartCount = minPlayers;
         this.maxPlayers = maxPlayers;
         this.isAuto = isAuto;
     }

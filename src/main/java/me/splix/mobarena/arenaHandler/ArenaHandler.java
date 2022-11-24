@@ -15,6 +15,7 @@ public class ArenaHandler {
     private static ArenaHandler instance;
     private ArrayList<arena> allArenas = new ArrayList<>();
     private ArrayList<arena> deactivatedArenas = new ArrayList<>();
+    private ArrayList<playerData> arenaCreators = new ArrayList<>();
 
     public ArenaHandler() {
         Looper();
@@ -94,6 +95,11 @@ public class ArenaHandler {
             @Override
             public void run(){
                 allArenas.forEach(arena::arenaHandlerHeartbeat);
+                arenaCreators.forEach(playerData -> {
+                    if (playerData.isCreatorEnabled()){
+                        playerData.getArenaCreator().drawEffect(playerData.getPlayer());
+                    }
+                });
             }
         }.runTaskTimer(Mobarena.getInstance(), 0, 20);
     }
