@@ -13,7 +13,7 @@ public class ScriptPython {
         System.out.println("Stage 1");
         Process process;
         try{
-            process = Runtime.getRuntime().exec("py src/test/java/me/splix/mobarena/utils/3DGraphicalDrawer.py " + args);
+            process = Runtime.getRuntime().exec("python src/test/java/me/splix/mobarena/utils/3DGraphicalDrawer.py " + args);
             mProcess = process;
         }catch(Exception e) {
             System.out.println("Exception Raised" + e.toString());

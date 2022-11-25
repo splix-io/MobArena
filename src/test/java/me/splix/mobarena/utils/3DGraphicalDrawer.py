@@ -37,6 +37,9 @@ fig = plt.figure()
 ax = plt.axes(projection='3d')
 ax.has_been_closed = False
 plt.ion()
+plt.xlim(-100, 100)
+plt.ylim(-100, 100)
+plt.autoscale(False)
 
 fig.canvas.mpl_connect('close_event', on_close)
 
@@ -56,7 +59,7 @@ def LiveUpdator(fig, ax, length, flipped):
     ax.yaxis.set_major_locator(MaxNLocator(6))
     ax.zaxis.set_major_locator(MaxNLocator(5))
 
-    plt.pause(0.01)
+    #plt.pause(0.01)
     if ax.has_been_closed:
         raise SystemExit
     return length

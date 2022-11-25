@@ -101,9 +101,9 @@ public class Utils {
         double minX = loc1.getBlockX();
         double minY = loc1.getBlockY();
         double minZ = loc1.getBlockZ();
-        double maxX = loc2.getBlockX()+1;
-        double maxY = loc2.getBlockY()+1;
-        double maxZ = loc2.getBlockZ()+1;
+        double maxX = loc2.getBlockX() + 1;
+        double maxY = loc2.getBlockY() + 1;
+        double maxZ = loc2.getBlockZ() + 1;
 
         for (double x = minX; x <= maxX; x = Math.round((x + particleDistance) * 1e2) / 1e2) {
             for (double y = minY; y <= maxY; y = Math.round((y + particleDistance) * 1e2) / 1e2) {

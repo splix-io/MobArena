@@ -6,8 +6,8 @@ import me.splix.mobarena.playerData.pStatus;
 import me.splix.mobarena.playerData.playerData;
 import me.splix.mobarena.playerData.playerDataHandler;
 import me.splix.mobarena.utils.Utils;
+import me.splix.mobarena.utils.language.MessageHandler;
 import me.splix.mobarena.wager.wagerInfo;
-import net.kyori.adventure.title.TitlePart;
 import org.bukkit.Location;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -119,7 +119,7 @@ public class arena implements Listener {
         player.teleport(spawnLocation);
 
         //Send joined message here
-
+        MessageHandler.sendPlayerMessage(player, "ARENA_JOIN");
 
         wagers.put(player, info);
 
