@@ -24,20 +24,15 @@ for ln in toFm:
         toFormat.append(temp)
 print(toFormat)
 DATA = array(toFormat)
-# ======
-## data:
 
 Xs = DATA[:, 0]
 Ys = DATA[:, 1]
 Zs = DATA[:, 2]
 
-# ======
-## plot:
 def on_close(event):
     event.canvas.figure.axes[0].has_been_closed = True
     raise SystemExit
 
-# fig.savefig('3D.png')
 fig = plt.figure()
 ax = plt.axes(projection='3d')
 ax.has_been_closed = False
@@ -56,17 +51,11 @@ def LiveUpdator(fig, ax, length, flipped):
     Zs = DATA[length:, 2]
     ax.scatter3D(Xs, Ys, Zs, color="green")
 
-    ##fig = plt.figure()
-    # ax = fig.add_subplot(111, projection='3d')
-
-    # surf = ax.plot_trisurf(Xs, Ys, Zs, cmap=cm.jet, linewidth=0)
-    # fig.colorbar(surf)
 
     ax.xaxis.set_major_locator(MaxNLocator(5))
     ax.yaxis.set_major_locator(MaxNLocator(6))
     ax.zaxis.set_major_locator(MaxNLocator(5))
 
-    #fig.tight_layout()
     plt.pause(0.01)
     if ax.has_been_closed:
         raise SystemExit
