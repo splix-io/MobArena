@@ -171,7 +171,11 @@ public class arena implements Listener {
             playerData playerData = playerDataHandler.getInstance().getPlayerData(player);
             if (!EliminatedPlayers.contains(player)){
                 //Winner!
-
+                for (ItemStack item: items) {
+                    if (player.getInventory().contains(item) || player.getInventory().firstEmpty() != -1){
+                        player.getInventory().addItem(item);
+                    }
+                }
             }
             if (playerData.getCurrentArena() == this) {
                 removePlayer(player);

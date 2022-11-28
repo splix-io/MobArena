@@ -11,7 +11,7 @@ public class UtilsTester {
 
     @Test
     void whenTestCase1() {
-        Location location1 = new Location(null, -20, -67, 13);
+        Location location1 = new Location(null, -0, -0, 0);
         Location location2 = new Location(null, 63, 27, 46);
         long currentTime = System.nanoTime();
         List<Location> locations = Utils.getOutlineBoarder(location1, location2, 1);

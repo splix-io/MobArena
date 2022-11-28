@@ -16,6 +16,7 @@ print ('Number of Arguments: ', sys.argv[1], ' arguments.')
 toFormat = sys.argv[1]
 toFm = toFormat.split(":")
 toFormat = []
+print("Preparing the coords")
 for ln in toFm:
     if len(ln) > 0:
         temp = []
